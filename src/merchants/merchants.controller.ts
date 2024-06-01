@@ -31,11 +31,20 @@ export class MerchantsController {
     private portsService: PortsService,
   ) {}
 
-  @Get()
+  @Get(':id/me')
   @Roles(UserType.MERCHANT)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async get() {
-    return normalizeResponse({ _message: 'success' });
+  @UseInterceptors(ValidMerchantInterceptor)
+  async get(@Request() req) {
+    return normalizeResponse({ merchant: req.merchant, _message: 'success' });
+  }
+
+  @Get(':id/dashboard')
+  @Roles(UserType.MERCHANT)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(ValidMerchantInterceptor)
+  async get(@Request() req) {
+    return normalizeResponse({ merchant: req.merchant, _message: 'success' });
   }
 
   @Get(':id/stations')
@@ -148,10 +157,7 @@ export class MerchantsController {
   @Roles(UserType.MERCHANT)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(ValidMerchantInterceptor)
-  async deletePort(
-    @Request() req,
-    @Param() params: PortParamsDto,
-  ) {
+  async deletePort(@Request() req, @Param() params: PortParamsDto) {
     const { id, stationId, portId } = params;
     const station = await this.stationsService.findByIdAndMerchantId(
       stationId,

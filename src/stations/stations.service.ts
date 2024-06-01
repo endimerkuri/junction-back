@@ -37,7 +37,10 @@ export class StationsService {
     id: string,
     merchantId: string,
   ): Promise<Station> {
-    return this.stationRepository.findOne({ where: { id, merchantId }, relations: ['ports'] });
+    return this.stationRepository.findOne({
+      where: { id, merchantId },
+      relations: ['ports'],
+    });
   }
 
   async delete(station: Station): Promise<Station> {
