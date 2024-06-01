@@ -17,6 +17,15 @@ export class Port {
   @Column({ nullable: false, type: 'uuid' })
   stationId: string;
 
+  @Column({ type: 'decimal', nullable: false })
+  price: number;
+
+  @Column({ type: 'decimal', nullable: false })
+  dynamicPrice: number;
+
+  @Column({ type: 'decimal', nullable: false })
+  requests: number;
+
   @ManyToOne(() => Station, (station) => station.ports, {
     onDelete: 'CASCADE',
   })

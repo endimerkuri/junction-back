@@ -19,6 +19,9 @@ export class PortsService {
     const port = new Port();
     port.type = payload.type;
     port.stationId = stationId;
+    port.price = payload.price;
+    port.dynamicPrice = payload.dynamicPrice;
+    port.requests = payload.requests;
     return this.portRepository.save(port);
   }
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEnum } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 enum PortType {
   FAST = 'fast',
@@ -10,6 +10,22 @@ enum PortType {
 export class CreatePortDto {
   @ApiProperty()
   @IsEnum(PortType)
-  @Transform(({ value }) => ("" + value).toLowerCase())
+  @Transform(({ value }) => ('' + value).toLowerCase())
   type: PortType;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  dynamicPrice: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  requests: number;
+
 }
