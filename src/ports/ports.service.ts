@@ -25,7 +25,11 @@ export class PortsService {
     return this.portRepository.save(port);
   }
 
-  async changeStatus(status: string): Promise<Port> {
-
+  async update(port: Port, payload: Partial<CreatePortDto>): Promise<Port> {
+    port.type = payload.type ?? port.type;
+    port.price = payload.price ?? port.price;
+    port.dynamicPrice = payload.dynamicPrice ?? port.dynamicPrice;
+    port.requests = payload.requests ?? port.requests;
+    return this.portRepository.save(port);
   }
 }

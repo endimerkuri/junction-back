@@ -9,7 +9,7 @@ export enum PortType {
 enum PortStatus {
   FREE = 'free',
   OCCUPIED = 'occupied',
-  NOTAVAILABLE = 'notAvailable',
+  NOT_AVAILABLE = 'notAvailable',
 }
 
 @Entity()

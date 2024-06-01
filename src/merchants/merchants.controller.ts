@@ -153,6 +153,31 @@ export class MerchantsController {
     return normalizeResponse({ port, _message: 'success' });
   }
 
+  @Put(':id/stations/:stationId/ports/:portId')
+  @Roles(UserType.MERCHANT)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(ValidMerchantInterceptor)
+  async updatePort(@Request() req, @Param() params: PortParamsDto, @Body() payload: Partial<CreatePortDto>) {
+    const { id, stationId, portId } = params;
+    const station = await this.stationsService.findByIdAndMerchantId(
+      stationId,
+      id,
+    );
+
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
+
+    const port = station.ports.find((port) => port.id === portId);
+
+    if (!port) {
+      throw new NotFoundException('Port not found');
+    }
+
+    await this.portsService.update(port, payload);
+    return normalizeResponse({ port, _message: 'success' });
+  }
+
   @Delete(':id/stations/:stationId/ports/:portId')
   @Roles(UserType.MERCHANT)
   @UseGuards(JwtAuthGuard, RolesGuard)
