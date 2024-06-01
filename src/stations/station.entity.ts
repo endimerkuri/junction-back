@@ -8,6 +8,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export enum StationStatus {
+  ACTIVE = 'active',
+  OUT_OF_ORDER = 'out_of_order',
+  OCCUPIED = 'occupied',
+}
+
 @Entity()
 export class Station {
   @PrimaryGeneratedColumn('uuid')
@@ -32,6 +38,9 @@ export class Station {
     onDelete: 'CASCADE',
   })
   merchant: Merchant;
+
+  @Column({ type: 'enum', enum: StationStatus, default: StationStatus.ACTIVE })
+  status: StationStatus;
 
   @OneToMany('Port', 'station')
   ports: Port[];

@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsLatitude, IsLongitude, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsString } from 'class-validator';
+
+enum StationStatus {
+  ACTIVE = 'active',
+  OUT_OF_ORDER = 'out_of_order',
+}
 
 export class CreateStationDto {
   @ApiProperty()
@@ -21,4 +26,9 @@ export class CreateStationDto {
   @IsString()
   @IsNotEmpty()
   address: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(StationStatus)
+  status: StationStatus;
 }

@@ -11,6 +11,10 @@ export class StationsService {
     private stationRepository: Repository<Station>,
   ) {}
 
+  async findAll(): Promise<Station[]> {
+    return this.stationRepository.find({ relations: ['merchant', 'ports'] });
+  }
+
   async update(
     station: Station,
     payload: Partial<CreateStationDto>,
@@ -19,6 +23,7 @@ export class StationsService {
     station.latitude = payload.latitude ?? station.latitude;
     station.longitude = payload.longitude ?? station.longitude;
     station.address = payload.address ?? station.address;
+    station.status = payload.status ?? station.status;
     return this.stationRepository.save(station);
   }
 
