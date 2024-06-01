@@ -30,6 +30,7 @@ export class PortsService {
     port.price = payload.price ?? port.price;
     port.dynamicPrice = payload.dynamicPrice ?? port.dynamicPrice;
     port.requests = payload.requests ?? port.requests;
+    port.status = payload.status ?? port.status;
     return this.portRepository.save(port);
   }
 }

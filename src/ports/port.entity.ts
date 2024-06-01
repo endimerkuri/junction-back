@@ -6,10 +6,10 @@ export enum PortType {
   FAST = 'fast',
 }
 
-enum PortStatus {
+export enum PortStatus {
   FREE = 'free',
   OCCUPIED = 'occupied',
-  NOT_AVAILABLE = 'notAvailable',
+  NOT_AVAILABLE = 'not_available',
 }
 
 @Entity()
@@ -26,10 +26,10 @@ export class Port {
   @Column({ type: 'decimal', nullable: false })
   price: number;
 
-  @Column({ type: 'decimal', nullable: false })
+  @Column({ type: 'decimal', nullable: true })
   dynamicPrice: number;
 
-  @Column({ type: 'decimal', nullable: false })
+  @Column({ type: 'decimal', nullable: true })
   requests: number;
 
   @Column({ type: 'enum', enum: PortStatus, default: PortStatus.FREE })

@@ -2,6 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
+enum PortStatus {
+  FREE = 'free',
+  OCCUPIED = 'occupied',
+  NOT_AVAILABLE = 'not_available',
+}
+
 enum PortType {
   FAST = 'fast',
   NORMAL = 'normal',
@@ -27,4 +33,10 @@ export class CreatePortDto {
   @IsNumber()
   @IsOptional()
   requests: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsEnum(PortStatus)
+  @Transform(({ value }) => ('' + value).toLowerCase())
+  status: PortStatus;
 }
