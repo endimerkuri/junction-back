@@ -32,4 +32,7 @@ export class Station {
     onDelete: 'CASCADE',
   })
   merchant: Merchant;
+
+  @OneToMany('Port', 'station')
+  ports: Port[];
 }

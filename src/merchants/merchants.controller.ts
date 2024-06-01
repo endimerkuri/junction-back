@@ -22,10 +22,14 @@ import { CreateStationDto } from './dto/create-station.dto';
 import { StationParamsDto } from './dto/station-params.dto';
 import { PortsService } from 'src/ports/ports.service';
 import { CreatePortDto } from './dto/create-port.dto';
+import { PortParamsDto } from './dto/port-params.dto';
 
 @Controller('merchants')
 export class MerchantsController {
-  constructor(private stationsService: StationsService, private portsService: PortsService) {}
+  constructor(
+    private stationsService: StationsService,
+    private portsService: PortsService,
+  ) {}
 
   @Get()
   @Roles(UserType.MERCHANT)
@@ -116,27 +120,55 @@ export class MerchantsController {
     await this.stationsService.delete(station);
     return normalizeResponse({ _message: 'success' });
   }
-  //
-  // @Post(':id/stations/:stationId/ports')
-  // @Roles(UserType.MERCHANT)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @UseInterceptors(ValidMerchantInterceptor)
-  // async createPort(
-  //   @Request() req,
-  //   @Param() params: StationParamsDto,
-  //   @Body() payload: CreatePortDto,
-  // ) {
-  //   const { id, stationId } = params;
-  //   const station = await this.stationsService.findByIdAndMerchantId(
-  //     stationId,
-  //     id,
-  //   );
-  //
-  //   if (!station) {
-  //     throw new NotFoundException('Station not found');
-  //   }
-  //
-  //   const port = await this.portsService.create(stationId, payload);
-  //   return normalizeResponse({ port, _message: 'success' });
-  // }
+
+  @Post(':id/stations/:stationId/ports')
+  @Roles(UserType.MERCHANT)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(ValidMerchantInterceptor)
+  async createPort(
+    @Request() req,
+    @Param() params: StationParamsDto,
+    @Body() payload: CreatePortDto,
+  ) {
+    const { id, stationId } = params;
+    const station = await this.stationsService.findByIdAndMerchantId(
+      stationId,
+      id,
+    );
+
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
+
+    const port = await this.portsService.create(stationId, payload);
+    return normalizeResponse({ port, _message: 'success' });
+  }
+
+  @Delete(':id/stations/:stationId/ports/:portId')
+  @Roles(UserType.MERCHANT)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseInterceptors(ValidMerchantInterceptor)
+  async deletePort(
+    @Request() req,
+    @Param() params: PortParamsDto,
+  ) {
+    const { id, stationId, portId } = params;
+    const station = await this.stationsService.findByIdAndMerchantId(
+      stationId,
+      id,
+    );
+
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
+
+    const port = station.ports.find((port) => port.id === portId);
+
+    if (!port) {
+      throw new NotFoundException('Port not found');
+    }
+
+    await this.portsService.delete(port);
+    return normalizeResponse({ port, _message: 'success' });
+  }
 }
