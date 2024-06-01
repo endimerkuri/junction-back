@@ -11,17 +11,17 @@ export class TokensService {
 
   constructor(
     @InjectRepository(Token)
-    private tokensRepository: Repository<Token>,
+    private tokenRepository: Repository<Token>,
     private configService: ConfigService,
   ) {}
 
   async findById(id: string): Promise<Token> {
-    return this.tokensRepository.findOneBy({ id });
+    return this.tokenRepository.findOneBy({ id });
   }
 
   async findValidToken(token: string): Promise<Token> {
     const now = new Date();
-    return this.tokensRepository.findOne({
+    return this.tokenRepository.findOne({
       where: {
         token,
         expiresAt: MoreThan(now),
@@ -31,7 +31,7 @@ export class TokensService {
   }
 
   async delete(token: Token): Promise<void> {
-    await this.tokensRepository.remove(token);
+    await this.tokenRepository.remove(token);
   }
 
   async create(userId: string): Promise<Token> {
@@ -44,7 +44,7 @@ export class TokensService {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + validityInDays);
 
-    const token = await this.tokensRepository.save({
+    const token = await this.tokenRepository.save({
       userId,
       token: refreshToken,
       expiresAt,

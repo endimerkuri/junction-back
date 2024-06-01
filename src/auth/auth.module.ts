@@ -8,11 +8,13 @@ import { ConfigService } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TokensModule } from 'src/tokens/tokens.module';
+import { MerchantsModule } from 'src/merchants/merchants.module';
 
 @Module({
   imports: [
     UsersModule,
     TokensModule,
+    MerchantsModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {

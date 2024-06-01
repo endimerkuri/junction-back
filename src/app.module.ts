@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TokensModule } from './tokens/tokens.module';
+import { MerchantsModule } from './merchants/merchants.module';
+import { StationsModule } from './stations/stations.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { TokensModule } from './tokens/tokens.module';
     AuthModule,
     UsersModule,
     TokensModule,
+    MerchantsModule,
+    StationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

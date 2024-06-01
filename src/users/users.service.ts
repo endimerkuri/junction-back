@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { User, UserType } from './user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -9,20 +9,30 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async findOneById(id: string): Promise<User> {
-    return this.usersRepository.findOneBy({ id });
+    return this.userRepository.findOneBy({ id });
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.usersRepository.findOneBy({ email });
+    return this.userRepository.findOneBy({ email });
   }
 
-  async create(payload: RegisterUserDto): Promise<User> {
-    payload.password = await bcrypt.hash(payload.password, 10);
-    const user = await this.usersRepository.save(payload);
+  async create(userType: UserType, payload: RegisterUserDto): Promise<User> {
+    const existingUser = await this.findOneByEmail(payload.email);
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
+    const user = new User();
+    user.type = userType;
+    user.email = payload.email;
+    user.firstName = payload.firstName;
+    user.lastName = payload.lastName;
+    user.password = await bcrypt.hash(payload.password, 10);
+    await this.userRepository.save(user);
     return user;
   }
 }

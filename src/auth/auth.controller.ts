@@ -6,6 +6,7 @@ import { LoginDto } from './dto/login.dto';
 import { normalizeResponse } from 'src/util/helpers/response.helpers';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RegisterMerchantDto } from './dto/register-merchant.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -36,5 +37,11 @@ export class AuthController {
     const { token } = req.user;
     await this.authService.logout(token);
     return normalizeResponse({ _message: 'Logout successful!' });
+  }
+
+  @Post('merchant/register')
+  async registerMerchant(@Body() payload: RegisterMerchantDto) {
+    const data = await this.authService.registerMerchant(payload);
+    return normalizeResponse(data);
   }
 }

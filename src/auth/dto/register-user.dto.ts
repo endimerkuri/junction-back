@@ -1,13 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNotIn,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { UserType } from 'src/users/user.entity';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class RegisterUserDto {
   @ApiProperty()
@@ -29,10 +21,4 @@ export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsEnum(UserType)
-  @IsNotIn([UserType.ADMIN])
-  @IsOptional()
-  @ApiProperty({ enum: UserType, default: UserType.CLIENT })
-  userType: UserType = UserType.CLIENT;
 }

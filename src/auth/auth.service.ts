@@ -6,12 +6,16 @@ import * as bcrypt from 'bcrypt';
 import { TokensService } from 'src/tokens/tokens.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Token } from 'src/tokens/token.entity';
+import { RegisterMerchantDto } from './dto/register-merchant.dto';
+import { MerchantsService } from 'src/merchants/merchants.service';
+import { UserType } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private tokenService: TokensService,
+    private tokensService: TokensService,
+    private merchantsService: MerchantsService,
     private jwtService: JwtService,
   ) {}
 
@@ -31,10 +35,12 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const { id, token } = await this.tokenService.create(user.id);
-    const payload = { sub: user.userId, jti: id };
+    const { id, token } = await this.tokensService.create(user.id);
+    const merchant = await this.merchantsService.findByUserId(user.id);
+    const payload = { sub: user.id, jti: id };
     return {
       user,
+      merchant,
       authentication: {
         refreshToken: token,
         accessToken: this.jwtService.sign(payload),
@@ -43,13 +49,15 @@ export class AuthService {
   }
 
   async refreshToken(payload: RefreshTokenDto) {
-    const validToken = await this.tokenService.findValidToken(payload.refreshToken);
+    const validToken = await this.tokensService.findValidToken(
+      payload.refreshToken,
+    );
     if (!validToken) {
       throw new UnauthorizedException('Invalid refresh token');
     }
 
-    await this.tokenService.delete(validToken);
-    const { id, token } = await this.tokenService.create(validToken.user.id);
+    await this.tokensService.delete(validToken);
+    const { id, token } = await this.tokensService.create(validToken.user.id);
     const jwtPayload = { sub: validToken.user.id, jti: id };
 
     return {
@@ -61,13 +69,17 @@ export class AuthService {
   }
 
   async register(payload: RegisterUserDto) {
-    await this.usersService.create(payload);
+    await this.usersService.create(UserType.CLIENT, payload);
     return {
       _message: 'User registered successfully',
     };
   }
 
+  async registerMerchant(payload: RegisterMerchantDto) {
+    await this.merchantsService.create(payload);
+  }
+
   async logout(token: Token) {
-    await this.tokenService.delete(token);
+    await this.tokensService.delete(token);
   }
 }
