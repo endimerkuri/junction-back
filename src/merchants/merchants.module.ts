@@ -5,9 +5,10 @@ import { Merchant } from './merchant.entity';
 import { UsersModule } from 'src/users/users.module';
 import { MerchantsController } from './merchants.controller';
 import { StationsModule } from 'src/stations/stations.module';
+import { PortsModule } from 'src/ports/ports.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Merchant]), UsersModule, StationsModule],
+  imports: [TypeOrmModule.forFeature([Merchant]), UsersModule, StationsModule, PortsModule],
   providers: [MerchantsService],
   exports: [MerchantsService],
   controllers: [MerchantsController],

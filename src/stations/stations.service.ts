@@ -11,8 +11,16 @@ export class StationsService {
     private stationRepository: Repository<Station>,
   ) {}
 
-  // async update(station: Station, payload: CreateStationDto): Promise<Station> {
-  // }
+  async update(
+    station: Station,
+    payload: Partial<CreateStationDto>,
+  ): Promise<Station> {
+    station.name = payload.name ?? station.name;
+    station.latitude = payload.latitude ?? station.latitude;
+    station.longitude = payload.longitude ?? station.longitude;
+    station.address = payload.address ?? station.address;
+    return this.stationRepository.save(station);
+  }
 
   async create(
     merchantId: string,
