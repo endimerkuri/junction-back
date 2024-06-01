@@ -116,27 +116,27 @@ export class MerchantsController {
     await this.stationsService.delete(station);
     return normalizeResponse({ _message: 'success' });
   }
-
-  @Post(':id/stations/:stationId/ports')
-  @Roles(UserType.MERCHANT)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @UseInterceptors(ValidMerchantInterceptor)
-  async createPort(
-    @Request() req,
-    @Param() params: StationParamsDto,
-    @Body() payload: CreatePortDto,
-  ) {
-    const { id, stationId } = params;
-    const station = await this.stationsService.findByIdAndMerchantId(
-      stationId,
-      id,
-    );
-
-    if (!station) {
-      throw new NotFoundException('Station not found');
-    }
-
-    const port = await this.portsService.create(stationId, payload);
-    return normalizeResponse({ port, _message: 'success' });
-  }
+  //
+  // @Post(':id/stations/:stationId/ports')
+  // @Roles(UserType.MERCHANT)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseInterceptors(ValidMerchantInterceptor)
+  // async createPort(
+  //   @Request() req,
+  //   @Param() params: StationParamsDto,
+  //   @Body() payload: CreatePortDto,
+  // ) {
+  //   const { id, stationId } = params;
+  //   const station = await this.stationsService.findByIdAndMerchantId(
+  //     stationId,
+  //     id,
+  //   );
+  //
+  //   if (!station) {
+  //     throw new NotFoundException('Station not found');
+  //   }
+  //
+  //   const port = await this.portsService.create(stationId, payload);
+  //   return normalizeResponse({ port, _message: 'success' });
+  // }
 }

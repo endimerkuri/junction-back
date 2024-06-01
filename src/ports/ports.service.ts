@@ -11,10 +11,10 @@ export class PortsService {
     private portRepository: Repository<Port>,
   ) {}
 
-  async create(stationId: string, payload: CreatePortDto): Promise<Port> {
-    const port = new Port();
-    port.type = payload.type;
-    port.stationId = stationId;
-    return this.portRepository.save(port);
-  }
+  // async create(stationId: string, payload: CreatePortDto): Promise<Port> {
+  //   const port = new Port();
+  //   port.type = payload.type;
+  //   port.stationId = stationId;
+  //   return this.portRepository.save(port);
+  // }
 }
