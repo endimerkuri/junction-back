@@ -24,4 +24,8 @@ export class PortsService {
     port.requests = payload.requests;
     return this.portRepository.save(port);
   }
+
+  async changeStatus(status: string): Promise<Port> {
+
+  }
 }

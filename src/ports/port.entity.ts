@@ -6,6 +6,12 @@ export enum PortType {
   FAST = 'fast',
 }
 
+enum PortStatus {
+  FREE = 'free',
+  OCCUPIED = 'occupied',
+  NOTAVAILABLE = 'notAvailable',
+}
+
 @Entity()
 export class Port {
   @PrimaryGeneratedColumn('uuid')
@@ -25,6 +31,9 @@ export class Port {
 
   @Column({ type: 'decimal', nullable: false })
   requests: number;
+
+  @Column({ type: 'enum', enum: PortStatus, default: PortStatus.FREE })
+  status: PortStatus;
 
   @ManyToOne(() => Station, (station) => station.ports, {
     onDelete: 'CASCADE',
