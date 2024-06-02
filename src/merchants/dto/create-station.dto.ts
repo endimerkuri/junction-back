@@ -38,5 +38,5 @@ export class CreateStationDto {
   @IsNotEmpty()
   @IsEnum(StationStatus)
   @Transform(({ value }) => ('' + value).toLowerCase())
-  status: StationStatus;
+  status: StationStatus = StationStatus.ACTIVE;
 }
