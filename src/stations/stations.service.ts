@@ -20,6 +20,9 @@ export class StationsService {
     if (query.type) {
       where.ports = { type: query.type };
     }
+    if (query.qs) {
+      where.name = query.qs;
+    }
     return this.stationRepository.find({
       where,
       relations: ['merchant', 'ports'],

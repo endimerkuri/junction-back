@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PortType } from 'src/ports/port.entity';
 import { StationStatus } from '../station.entity';
 import { Transform } from 'class-transformer';
@@ -16,4 +16,9 @@ export class StationQueryDto {
   @IsEnum(StationStatus)
   @Transform(({ value }) => ('' + value).toLowerCase())
   status: StationStatus;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  qs: string;
 }
