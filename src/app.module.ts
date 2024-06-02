@@ -11,6 +11,7 @@ import { MerchantsModule } from './merchants/merchants.module';
 import { StationsModule } from './stations/stations.module';
 import { PortsModule } from './ports/ports.module';
 import { CardsModule } from './cards/cards.module';
+import { ChargeSessionsModule } from './charge-sessions/charge-sessions.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CardsModule } from './cards/cards.module';
     StationsModule,
     PortsModule,
     CardsModule,
+    ChargeSessionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

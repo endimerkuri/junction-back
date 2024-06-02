@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   Relation,
+  OneToMany,
 } from 'typeorm';
 import { Card } from 'src/cards/card.entity';
+import { ChargeSession } from 'src/charge-sessions/charge-session.entity';
 
 export enum UserType {
   ADMIN = 'admin',
@@ -38,4 +40,7 @@ export class User {
 
   @OneToOne(() => Card, (card) => card.user)
   card: Relation<Card>;
+
+  @OneToMany(() => ChargeSession, (chargeSession) => chargeSession.user)
+  chargeSessions: Relation<ChargeSession[]>;
 }

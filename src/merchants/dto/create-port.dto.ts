@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsUUID,
+} from 'class-validator';
 
 enum PortStatus {
   FREE = 'free',
@@ -44,4 +50,8 @@ export class CreatePortDto {
   @IsOptional()
   @IsNumber()
   bookingFee: number;
+
+  @IsOptional()
+  @IsUUID()
+  occupiedBy: string;
 }

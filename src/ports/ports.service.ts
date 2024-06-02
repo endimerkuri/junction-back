@@ -11,6 +11,10 @@ export class PortsService {
     private portRepository: Repository<Port>,
   ) {}
 
+  async findById(id: string): Promise<Port> {
+    return this.portRepository.findOne({ where: { id } });
+  }
+
   async findByIdAndStationId(id: string, stationId: string): Promise<Port> {
     return this.portRepository.findOne({ where: { id, stationId } });
   }
