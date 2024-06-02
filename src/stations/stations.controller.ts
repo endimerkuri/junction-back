@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { normalizeResponse } from 'src/util/helpers/response.helpers';
@@ -18,6 +19,7 @@ import { PortStatus } from 'src/ports/port.entity';
 import { StationStatus } from './station.entity';
 import { PortsService } from 'src/ports/ports.service';
 import { CardsService } from 'src/cards/cards.service';
+import { StationQueryDto } from './dto/station-query.dto';
 
 @Controller('stations')
 export class StationsController {
@@ -30,9 +32,9 @@ export class StationsController {
   @Get()
   @Roles(UserType.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async getStations(@Request() req) {
+  async getStations(@Request() req, @Query() query: StationQueryDto) {
     const { user } = req;
-    const stations = await this.stationsService.findAll();
+    const stations = await this.stationsService.findAll(query);
     stations.forEach((station: any) => {
       let status = station.status;
       const ports = station.ports;

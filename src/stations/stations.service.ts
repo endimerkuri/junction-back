@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Station } from './station.entity';
 import { Repository } from 'typeorm';
 import { CreateStationDto } from 'src/merchants/dto/create-station.dto';
+import { StationQueryDto } from './dto/station-query.dto';
 
 @Injectable()
 export class StationsService {
@@ -11,8 +12,18 @@ export class StationsService {
     private stationRepository: Repository<Station>,
   ) {}
 
-  async findAll(): Promise<Station[]> {
-    return this.stationRepository.find({ relations: ['merchant', 'ports'] });
+  async findAll(query: StationQueryDto): Promise<Station[]> {
+    const where: any = {};
+    if (query.status) {
+      where.status = query.status;
+    }
+    if (query.type) {
+      where.ports = { type: query.type };
+    }
+    return this.stationRepository.find({
+      where,
+      relations: ['merchant', 'ports'],
+    });
   }
 
   async update(

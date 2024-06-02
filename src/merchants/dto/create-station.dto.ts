@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsLatitude,
@@ -36,5 +37,6 @@ export class CreateStationDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsEnum(StationStatus)
+  @Transform(({ value }) => ('' + value).toLowerCase())
   status: StationStatus;
 }
