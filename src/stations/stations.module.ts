@@ -3,9 +3,10 @@ import { StationsService } from './stations.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Station } from './station.entity';
 import { StationsController } from './stations.controller';
+import { PortsModule } from 'src/ports/ports.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Station])],
+  imports: [PortsModule, TypeOrmModule.forFeature([Station])],
   providers: [StationsService],
   exports: [StationsService],
   controllers: [StationsController],

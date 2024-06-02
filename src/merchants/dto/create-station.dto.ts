@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsLatitude,
+  IsLongitude,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 enum StationStatus {
   ACTIVE = 'active',

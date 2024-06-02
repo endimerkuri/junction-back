@@ -157,7 +157,11 @@ export class MerchantsController {
   @Roles(UserType.MERCHANT)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(ValidMerchantInterceptor)
-  async updatePort(@Request() req, @Param() params: PortParamsDto, @Body() payload: Partial<CreatePortDto>) {
+  async updatePort(
+    @Request() req,
+    @Param() params: PortParamsDto,
+    @Body() payload: Partial<CreatePortDto>,
+  ) {
     const { id, stationId, portId } = params;
     const station = await this.stationsService.findByIdAndMerchantId(
       stationId,

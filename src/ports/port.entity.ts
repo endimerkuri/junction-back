@@ -35,6 +35,9 @@ export class Port {
   @Column({ type: 'enum', enum: PortStatus, default: PortStatus.FREE })
   status: PortStatus;
 
+  @Column({ type: 'uuid', nullable: true })
+  occupiedBy: string;
+
   @ManyToOne(() => Station, (station) => station.ports, {
     onDelete: 'CASCADE',
   })
