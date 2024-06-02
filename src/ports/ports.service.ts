@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Port } from './port.entity';
+import { Port, PortStatus, PortType } from './port.entity';
 import { Repository } from 'typeorm';
 import { CreatePortDto } from 'src/merchants/dto/create-port.dto';
 
@@ -13,6 +13,24 @@ export class PortsService {
 
   async findById(id: string): Promise<Port> {
     return this.portRepository.findOne({ where: { id } });
+  }
+
+  async findByTypeAndStationId(
+    type: PortType,
+    stationId: string,
+  ): Promise<Port> {
+    return this.portRepository.findOne({
+      where: { type, stationId, status: PortStatus.FREE },
+    });
+  }
+
+  async findByOccupiedByIdAndStationId(
+    occupiedBy: string,
+    stationId: string,
+  ): Promise<Port> {
+    return this.portRepository.findOne({
+      where: { occupiedBy, stationId, status: PortStatus.OCCUPIED },
+    });
   }
 
   async findByIdAndStationId(id: string, stationId: string): Promise<Port> {

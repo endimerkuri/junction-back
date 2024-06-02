@@ -22,4 +22,4 @@ primary_region = 'otp'
   cpus = 1
 
 [env]
-  JWT_EXPIRES_IN = '60s'
+  JWT_EXPIRES_IN = '60000s'

@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Request,
   Controller,
   Get,
@@ -8,6 +7,7 @@ import {
   Post,
   UseGuards,
   Query,
+  Body,
 } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { normalizeResponse } from 'src/util/helpers/response.helpers';
@@ -20,6 +20,7 @@ import { StationStatus } from './station.entity';
 import { PortsService } from 'src/ports/ports.service';
 import { CardsService } from 'src/cards/cards.service';
 import { StationQueryDto } from './dto/station-query.dto';
+import { BookPortDto } from './dto/book-port.dto';
 
 @Controller('stations')
 export class StationsController {
@@ -58,26 +59,23 @@ export class StationsController {
     return normalizeResponse({ stations, _message: 'success' });
   }
 
-  @Post(':id/ports/:portId/book')
+  @Post(':id/book')
   @Roles(UserType.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async bookPort(
     @Request() req,
     @Param('id') id: string,
-    @Param('portId') portId: string,
+    @Body() payload: BookPortDto,
   ) {
     const {
       user: { user },
     } = req;
     const { id: userId, card } = user;
-    let port = await this.portsService.findByIdAndStationId(portId, id);
+    const { type } = payload;
+    let port = await this.portsService.findByTypeAndStationId(type, id);
 
     if (!port) {
       throw new NotFoundException('Port not found');
-    }
-
-    if (port.status === PortStatus.OCCUPIED) {
-      throw new ConflictException('Port is already occupied');
     }
 
     port.occupiedBy = userId;
@@ -89,27 +87,20 @@ export class StationsController {
     return normalizeResponse({ port, _message: 'success' });
   }
 
-  @Post(':id/ports/:portId/unbook')
+  @Post(':id/unbook')
   @Roles(UserType.CLIENT)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async unbookPort(
-    @Request() req,
-    @Param('id') id: string,
-    @Param('portId') portId: string,
-  ) {
-    const { user } = req;
-    let port = await this.portsService.findByIdAndStationId(portId, id);
+  async unbookPort(@Request() req, @Param('id') id: string) {
+    const {
+      user: { user },
+    } = req;
+    let port = await this.portsService.findByOccupiedByIdAndStationId(
+      user.id,
+      id,
+    );
 
     if (!port) {
       throw new NotFoundException('Port not found');
-    }
-
-    if (port.status === PortStatus.FREE) {
-      throw new ConflictException('Port is already free');
-    }
-
-    if (port.occupiedBy !== user.user.id) {
-      throw new ConflictException('Port is not occupied by you');
     }
 
     port.occupiedBy = null;
