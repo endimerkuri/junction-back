@@ -10,6 +10,7 @@ import { TokensModule } from './tokens/tokens.module';
 import { MerchantsModule } from './merchants/merchants.module';
 import { StationsModule } from './stations/stations.module';
 import { PortsModule } from './ports/ports.module';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PortsModule } from './ports/ports.module';
     MerchantsModule,
     StationsModule,
     PortsModule,
+    CardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

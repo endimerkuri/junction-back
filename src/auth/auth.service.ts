@@ -9,6 +9,7 @@ import { Token } from 'src/tokens/token.entity';
 import { RegisterMerchantDto } from './dto/register-merchant.dto';
 import { MerchantsService } from 'src/merchants/merchants.service';
 import { UserType } from 'src/users/user.entity';
+import { CardsService } from 'src/cards/cards.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private usersService: UsersService,
     private tokensService: TokensService,
     private merchantsService: MerchantsService,
+    private cardsService: CardsService,
     private jwtService: JwtService,
   ) {}
 
@@ -28,6 +30,10 @@ export class AuthService {
     const correctPassword = await bcrypt.compare(pass, user.password);
     if (!correctPassword) {
       return null;
+    }
+
+    if (!user.card) {
+      await this.cardsService.create(user.id);
     }
 
     const { password, ...result } = user;

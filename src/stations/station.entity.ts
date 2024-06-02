@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 
 export enum StationStatus {
@@ -34,14 +35,14 @@ export class Station {
   @Column({ nullable: false, type: 'uuid' })
   merchantId: string;
 
-  @ManyToOne(() => Merchant, (merchant) => merchant.stations, {
-    onDelete: 'CASCADE',
-  })
-  merchant: Merchant;
-
   @Column({ type: 'enum', enum: StationStatus, default: StationStatus.ACTIVE })
   status: StationStatus;
 
-  @OneToMany('Port', 'station')
-  ports: Port[];
+  @ManyToOne(() => Merchant, (merchant) => merchant.stations, {
+    onDelete: 'CASCADE',
+  })
+  merchant: Relation<Merchant>;
+
+  @OneToMany(() => Port, (port) => port.station)
+  ports: Relation<Port[]>;
 }

@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  Relation,
+} from 'typeorm';
+import { Card } from 'src/cards/card.entity';
 
 export enum UserType {
   ADMIN = 'admin',
@@ -28,4 +35,7 @@ export class User {
 
   @Column({ type: 'enum', enum: UserType, default: UserType.CLIENT })
   type: UserType;
+
+  @OneToOne(() => Card, (card) => card.user)
+  card: Relation<Card>;
 }

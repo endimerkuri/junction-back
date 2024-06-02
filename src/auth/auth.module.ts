@@ -9,6 +9,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TokensModule } from 'src/tokens/tokens.module';
 import { MerchantsModule } from 'src/merchants/merchants.module';
+import { CardsModule } from 'src/cards/cards.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MerchantsModule } from 'src/merchants/merchants.module';
     TokensModule,
     MerchantsModule,
     PassportModule,
+    CardsModule,
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {

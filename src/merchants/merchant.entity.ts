@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 
 @Entity()
@@ -23,8 +24,8 @@ export class Merchant {
   ownerId: string;
 
   @ManyToOne(() => User)
-  owner: User;
+  owner: Relation<User>;
 
-  @OneToMany('Station', 'merchant')
-  stations: Station[];
+  @OneToMany(() => Station, (station) => station.merchant)
+  stations: Relation<Station[]>;
 }

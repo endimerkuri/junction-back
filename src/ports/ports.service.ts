@@ -26,6 +26,7 @@ export class PortsService {
     port.price = payload.price;
     port.dynamicPrice = payload.dynamicPrice;
     port.requests = payload.requests;
+    port.bookingFee = payload.bookingFee;
     return this.portRepository.save(port);
   }
 
@@ -35,6 +36,7 @@ export class PortsService {
     port.dynamicPrice = payload.dynamicPrice ?? port.dynamicPrice;
     port.requests = payload.requests ?? port.requests;
     port.status = payload.status ?? port.status;
+    port.bookingFee = payload.bookingFee ?? port.bookingFee;
     return this.portRepository.save(port);
   }
 }

@@ -13,11 +13,14 @@ export class UsersService {
   ) {}
 
   async findOneById(id: string): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({ where: { id }, relations: ['card'] });
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.userRepository.findOneBy({ email });
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['card'],
+    });
   }
 
   async create(userType: UserType, payload: RegisterUserDto): Promise<User> {

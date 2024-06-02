@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 import { Station } from 'src/stations/station.entity';
 
 export enum PortType {
@@ -38,8 +44,11 @@ export class Port {
   @Column({ type: 'uuid', nullable: true })
   occupiedBy: string;
 
+  @Column({ nullable: false, default: 200 })
+  bookingFee: number;
+
   @ManyToOne(() => Station, (station) => station.ports, {
     onDelete: 'CASCADE',
   })
-  station: Station;
+  station: Relation<Station>;
 }

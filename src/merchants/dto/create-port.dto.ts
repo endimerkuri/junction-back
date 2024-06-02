@@ -39,4 +39,9 @@ export class CreatePortDto {
   @IsEnum(PortStatus)
   @Transform(({ value }) => ('' + value).toLowerCase())
   status: PortStatus;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  bookingFee: number;
 }
